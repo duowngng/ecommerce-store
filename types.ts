@@ -14,6 +14,7 @@ export interface Product {
     id: string;
     category: Category;
     name: string;
+    quantity: number;
     price: number;
     isFeatured: boolean;
     size: Size;
@@ -31,4 +32,9 @@ export interface Color {
     id: string;
     name: string;
     value: string;
+}
+
+export interface CartItem {
+  product: Product;
+  quantity: number;
 }

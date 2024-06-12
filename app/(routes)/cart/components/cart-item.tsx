@@ -5,10 +5,11 @@ import { X } from "lucide-react";
 import IconButton from "@/components/ui/icon-button";
 import Currency from "@/components/ui/currency";
 import useCart from "@/hooks/use-cart";
-import { Product } from "@/types";
+import { CartItem as CartItemType, Product } from "@/types";
+import QuantityPicker from "./quantity-picker";
 
 interface CartItemProps {
-  data: Product;
+  data: CartItemType;
 }
 
 const CartItem:React.FC<CartItemProps> = ({
@@ -17,15 +18,15 @@ const CartItem:React.FC<CartItemProps> = ({
   const cart = useCart();
 
   const onRemove = () => {
-    cart.removeItem(data.id);
+    cart.removeItem(data.product.id);
   }
 
   return (
     <li className="flex py-6 border-b">
-      <div className="relative h-24 w-24 rounded-md overflow-hidden sm:h-48 sm:w-48">
+      <div className="relative h-36 w-36 rounded-md overflow-hidden sm:h-48 sm:w-48">
         <Image
           fill
-          src={data.images[0]}
+          src={data.product.images[0]}
           alt=""
           className="object-cover object-center"
         />
@@ -37,14 +38,18 @@ const CartItem:React.FC<CartItemProps> = ({
         <div className="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
           <div className="flex justify-between">
             <p className="text-lg font-semibold text-black">
-              {data.name}
+              {data.product.name}
             </p>
           </div>
           <div className="mt-1 flex text-sm">
-            <p className="text-gray-500">{data.color.name}</p>
-            <p className="text-gray-500 ml-4 border-l border-gray-200 pl-4">{data.size.name}</p>
+            <p className="text-gray-500">{data.product.color.name}</p>
+            <p className="text-gray-500 ml-4 border-l border-gray-200 pl-4">{data.product.size.name}</p>
           </div>
-          <Currency value={data.price} />
+          
+        </div>
+        <div className="relative pr-9 grid grid-cols-2 sm:gap-x-6 sm:pr-0 items-center">
+          <Currency value={data.product.price} />
+          <QuantityPicker data={data}/>
         </div>
       </div>
     </li>
