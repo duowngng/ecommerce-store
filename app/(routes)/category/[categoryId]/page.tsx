@@ -34,7 +34,16 @@ const CategoryPage:React.FC<CategoryPageProps> = async ({
   const sizes = await getSizes();
   const colors = await getColors();
   const category = await getCategory(params.categoryId);
-  const billboard = await getBillboard(category.billboardId)
+  const billboard = await getBillboard(category.billboardId);
+
+  const numericSizes = sizes.filter(size => !isNaN(parseFloat(size.name)));
+  const nonNumericSizes = sizes.filter(size => isNaN(parseFloat(size.name)));
+  
+  numericSizes.sort((a, b) => parseFloat(a.name) - parseFloat(b.name));
+  
+  nonNumericSizes.sort((a, b) => b.name.localeCompare(a.name));
+  
+  const sortedSizes = [...nonNumericSizes, ...numericSizes];
 
   return (
     <div className="bg-white">
@@ -44,12 +53,12 @@ const CategoryPage:React.FC<CategoryPageProps> = async ({
         />
         <div className="px-4 sm:px-6 lg:px-8 pb-24">
           <div className="lg:grid lg:grid-cols-5 lg:gap-x-8">
-            <MobileFilters sizes={sizes} colors={colors} />
+            <MobileFilters sizes={sortedSizes} colors={colors} />
             <div className="hidden lg:block">
               <Filter 
                 valueKey="sizeId"
                 name="Sizes"
-                data={sizes}
+                data={sortedSizes}
               />
               <Filter 
                 valueKey="colorId"

@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Color, Size } from "@/types";
 import Button from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useRef } from "react";
 
 interface FilterProps{
   data: (Size | Color)[];
@@ -20,6 +21,7 @@ const Filter:React.FC<FilterProps> = ({
 }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const selectedValue = searchParams.get(valueKey);
 
